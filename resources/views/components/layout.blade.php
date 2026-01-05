@@ -1,5 +1,4 @@
-@php use Illuminate\Support\Facades\Vite; @endphp
-    <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,17 +7,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap"
         rel="stylesheet">
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
-<body class="bg-black text-white font-hanken-grotesk">
-
+<body class="bg-black text-white font-hanken-grotesk pb-20">
 <div class="px-10">
     <nav class="flex justify-between items-center border-white/10 py-5">
         <div>
             <a href="/">
-                <img src="{{Vite::asset('resources/images/logo.svg')}}" alt="">
+                <img src="{{\Illuminate\Support\Facades\Vite::asset('resources/images/logo.svg')}}" alt="">
             </a>
         </div>
         <div class="space-x-6 font-bold">
@@ -28,11 +26,25 @@
             <a href="#">Companies</a>
         </div>
 
-        <div>
-            <a href="">Post a Job</a>
-        </div>
-    </nav>
+        @auth
+            <div class="space-x-6 font-bold flex">
+                <a href="/jobs/create">Post a Job</a>
 
+                <form method="POST" action="/logout">
+                    @csrf
+                    @method('DELETE')
+                    <button>Log Out</button>
+                </form>
+            </div>
+        @endauth
+
+        @guest()
+            <div class="space-x-6 font-bold">
+                <a href="/register">Sing Up</a>
+                <a href="/login">Log In</a>
+            </div>
+        @endguest
+    </nav>
     <main class="mt-10 max-w-[986px] mx-auto">
         {{ $slot }}
     </main>
